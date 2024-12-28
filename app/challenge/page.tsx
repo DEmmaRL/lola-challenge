@@ -173,8 +173,8 @@ export default function MultiStepForm() {
                 <div className="space-y-6">
                   {Object.entries(methods.getValues()).map(([key, value]) => (
                     <div key={key} className="bg-gray-100 p-4 rounded shadow">
-                      {/* Título de cada campo, se formatea el nombre de la clave */}
-                      {/* TODO: Cambiar a que se imprima el label y no el name para mantener congruencia */}
+                      {/* Name de cada campo, se formatea el nombre de la clave */}
+                      {/* TODO: Cambiar a que se imprima el label del campo y no el name para mantener congruencia */}
                       <h3 className="font-semibold capitalize">{key.replace(/([A-Z])/g, " $1")}:</h3>
                       {Array.isArray(value) ? (
                         <div className="flex flex-wrap mt-2">
