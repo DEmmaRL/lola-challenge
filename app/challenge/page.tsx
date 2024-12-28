@@ -61,7 +61,7 @@ export default function MultiStepForm() {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
-  const goToStep = (stepIndex) => setCurrentStep(stepIndex);
+  const goToStep = (stepIndex: number) => setCurrentStep(stepIndex);
 
   const onSubmit = (data) => {
     console.log("Form Submitted:", data);
@@ -115,15 +115,15 @@ export default function MultiStepForm() {
               errors[field.name] ? "border-red-500" : "border-neutral-300"
             } focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500`}
           />
-          {errors[field.name] && (
-            <p className="text-red-500 text-sm">{errors[field.name].message}</p>
+          {errors[field.name]?.message && (
+            <p className="text-red-500 text-sm">{errors[field.name]?.message}</p>
           )}
         </div>
       )
     );
 
   return (
-    <FormProvider {...methods}>
+    (<FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full sm:w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px] mx-auto my-6 p-6 rounded-xl border bg-white shadow-md"
@@ -231,6 +231,6 @@ export default function MultiStepForm() {
           )}
         </div>
       </form>
-    </FormProvider>
+    </FormProvider>)
   );
 }
