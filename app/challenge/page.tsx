@@ -79,25 +79,25 @@ export default function MultiStepForm() {
 
   const fieldsByStep: FieldsByStep = {
     0: [
-      { label: "Nombre Completo", name: "fullName", placeholder: "Ingresa tu nombre completo" },
-      { label: "Correo Electrónico", name: "email", type: "email", placeholder: "Ingresa tu correo" },
-      { label: "Teléfono", name: "phone", placeholder: "Ingresa tu teléfono" },
-      { label: "Ubicación", name: "location", placeholder: "Ingresa tu ubicación" },
-      { label: "URL de Portafolio", name: "portfolioUrl", type: "url", placeholder: "Ingresa tu portafolio (opcional)" },
+      { label: "Full Name", name: "fullName", placeholder: "Ingresa tu nombre completo" },
+      { label: "Email", name: "email", type: "email", placeholder: "Ingresa tu correo" },
+      { label: "Phone", name: "phone", placeholder: "Ingresa tu teléfono" },
+      { label: "Location", name: "location", placeholder: "Ingresa tu ubicación" },
+      { label: "Portfolio URL", name: "portfolioUrl", type: "url", placeholder: "Ingresa tu portafolio (opcional)" },
     ],
     1: [
-      { label: "Puesto Actual", name: "currentRole", placeholder: "Ingresa tu puesto actual" },
+      { label: "Current Role", name: "currentRole", placeholder: "Ingresa tu puesto actual" },
       {
-        label: "Años de Experiencia",
+        label: "Years of experience",
         name: "yearsOfExperience",
         type: "number",
         placeholder: "Ingresa tus años de experiencia",
       },
-      { label: "Habilidades", name: "skills", type: "tags" },
+      { label: "Skills", name: "skills", type: "tags" },
       { label: "Empresa", name: "company", placeholder: "Ingresa el nombre de tu empresa" },
       {
-        label: "Descripción de Logros",
-        name: "achievement",
+        label: "Achievements",
+        name: "achievementS",
         placeholder: "Describe tus logros (mínimo 100 caracteres)",
       },
     ],

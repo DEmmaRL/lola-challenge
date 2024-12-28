@@ -12,7 +12,7 @@ export interface Experience {
   yearsOfExperience: number;
   skills?: string[];
   company: string;
-  achievement: string;
+  achievements: string;
 }
 
 export interface ApplicationForm extends PersonalInfo, Experience {}

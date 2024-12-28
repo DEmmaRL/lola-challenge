@@ -12,7 +12,7 @@ export const ExperienceSchema = z.object({
         .array(z.string())
         .min(3, { message: "Debe ingresar al menos 3 habilidades." }),
     company: z.string().min(1, "La empresa es requerida."),
-    achievement: z.string().min(100, "La descripción de logros debe tener al menos 100 caracteres."),
+    achievements: z.string().min(100, "La descripción de logros debe tener al menos 100 caracteres."),
 });
 
 export type Experience = z.infer<typeof ExperienceSchema>;
