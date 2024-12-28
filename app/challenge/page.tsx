@@ -97,7 +97,7 @@ export default function MultiStepForm() {
       { label: "Empresa", name: "company", placeholder: "Ingresa el nombre de tu empresa" },
       {
         label: "Achievements",
-        name: "achievementS",
+        name: "achievements",
         placeholder: "Describe tus logros (mínimo 100 caracteres)",
       },
     ],
