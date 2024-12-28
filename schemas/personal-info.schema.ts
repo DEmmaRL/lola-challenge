@@ -1,13 +1,30 @@
 import { z } from "zod";
 
 export const PersonalInfoSchema = z.object({
-  fullName: z.string(),  // What's a reasonable minimum length for a full name?
-  email: z.string().email(),
-  phone: z.string()
-    // Should we allow international phone numbers? What format makes sense?
-    .regex(/^\+?[1-9]\d{1,14}$/),
-  location: z.string(),  // Should this be free text or structured (city, country)?
-  portfolioUrl: z.string().url().optional(),
+  fullName: z
+    .string()
+    .min(3, "El nombre completo debe ser válido.")
+    .regex(/^[a-zA-ZÀ-ÿ\s'-]+$/, "El nombre solo puede incluir letras y espacios."),
+  email: z
+    .string()
+    .email("El correo electrónico debe ser válido.")
+    .min(1, "El correo electrónico es requerido."),
+  phone: z
+    .string()
+    .regex(
+      /^[\+\-\.\s\(\)0-9\u00C0-\u017F]*$/,
+      "El número de teléfono debe ser válido."
+    )
+    .min(1, "El número de teléfono es requerido."),
+  location: z
+    .string()
+    .regex(
+      /^[\wÀ-ÿ\s,.'-]+$/,
+      "La ubicación solo puede contener letras y caracteres comunes."
+    )
+    .min(1, "La ubicación es requerida."),
+  portfolioUrl: z
+    .string()
+    .url("El URL debe ser válido.")
+    .or(z.literal("")),
 });
-
-export type PersonalInfo = z.infer<typeof PersonalInfoSchema>;
