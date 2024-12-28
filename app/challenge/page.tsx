@@ -12,7 +12,7 @@ import { ApplicationForm, FieldsByStep , Step } from "@/types/form";
 
 const steps: Step[] = [
   { title: "Información Personal", details: "Datos personales" },
-  { title: "Logros", details: "Información de experiencia" },
+  { title: "Experiencia", details: "Información de experiencia" },
   { title: "Revisión", details: "Confirma todos los datos" },
 ];
 
@@ -42,7 +42,7 @@ export default function MultiStepForm() {
   });
   
 
-  const { handleSubmit, watch, trigger, formState, setValue } = methods;
+  const { handleSubmit, watch, trigger, formState } = methods;
   const { errors } = formState;
 
   useEffect(() => {
@@ -173,6 +173,8 @@ export default function MultiStepForm() {
                 <div className="space-y-6">
                   {Object.entries(methods.getValues()).map(([key, value]) => (
                     <div key={key} className="bg-gray-100 p-4 rounded shadow">
+                      {/* Título de cada campo, se formatea el nombre de la clave */}
+                      {/* TODO: Cambiar a que se imprima el label y no el name para mantener congruencia */}
                       <h3 className="font-semibold capitalize">{key.replace(/([A-Z])/g, " $1")}:</h3>
                       {Array.isArray(value) ? (
                         <div className="flex flex-wrap mt-2">
@@ -213,7 +215,8 @@ export default function MultiStepForm() {
                       checked={isConfirmed}
                       onChange={(e) => setIsConfirmed(e.target.checked)}
                     />
-                    <span>Confirmo que los detalles son correctos.</span>
+                    {/* Aquí se puede agregar /reemplazar con yun aviso de privacidad o términos y condiciones */}
+                    <span>Confirmo que los datos ingresados son correctos y legitimos.</span>
                   </label>
                 </div>
               </div>

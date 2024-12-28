@@ -12,19 +12,19 @@ export const PersonalInfoSchema = z.object({
   phone: z
     .string()
     .regex(
-      /^[\+\-\.\s\(\)0-9\u00C0-\u017F]*$/,
+      /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/, /* Getting from https://regex101.com/r/j48BZs/2 */
       "El número de teléfono debe ser válido."
     )
     .min(1, "El número de teléfono es requerido."),
   location: z
     .string()
     .regex(
-      /^[\wÀ-ÿ\s,.'-]+$/,
-      "La ubicación solo puede contener letras y caracteres comunes."
+      /^[\wÀ-ÿ\s,.'-]+$/, 
+      "La locación solo puede contener letras y caracteres comunes."
     )
-    .min(1, "La ubicación es requerida."),
+    .min(1, "La locación es requerida."),
   portfolioUrl: z
     .string()
-    .url("El URL debe ser válido.")
+    .url("La URL debe ser válida.")
     .or(z.literal("")),
 });

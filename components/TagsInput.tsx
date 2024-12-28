@@ -16,6 +16,7 @@ const TagsInput: React.FC< TagsInputProps > = ({ name, errors, initialTags = [] 
 
   const handleFocusOut = () => {
     if (inputValue.trim() !== "") {
+      // Eliminamos la coma del string ingresado
       const cleanInput = inputValue.replace(/,$/, "").trim();
       if (cleanInput !== "") {
         updateTags([...tags, cleanInput]);
@@ -25,13 +26,11 @@ const TagsInput: React.FC< TagsInputProps > = ({ name, errors, initialTags = [] 
   };
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "," || e.key === "Enter") {
-      handleFocusOut();
-    }
+    if (e.key === "," || e.key === "Enter" ) handleFocusOut();
   };
 
   const removeTag = (index: number) => {
-    if (confirm("¿Realmente deseas eliminar esta etiqueta?")) {
+    if (confirm( "¿Realmente deseas eliminar esta etiqueta?" )) {
       updateTags(tags.filter((_, i) => i !== index));
     }
   };
@@ -39,7 +38,8 @@ const TagsInput: React.FC< TagsInputProps > = ({ name, errors, initialTags = [] 
   return (
     <div className="mb-4">
       <label className="block mb-2 font-medium text-gray-700">
-        Etiquetas
+        { /* TODO : Hacer este label customizable */}
+        Skills
       </label>
       <div
         className={`tags-container flex flex-wrap items-center border p-2 rounded ${
