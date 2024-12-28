@@ -1,5 +1,6 @@
+import { StepperProps } from "@/types/form";
 
-export default function Stepper({ steps, currentStep }) {
+export default function Stepper({ steps, currentStep }: StepperProps) {
     return (
         <ol className="flex items-center justify-center w-full mx-auto">
             {steps.map((step, index) => (

@@ -1,12 +1,15 @@
 import { useFormContext } from "react-hook-form";
-import { useState } from "react";
+import { useState, KeyboardEvent } from "react";
+import { TagsInputProps } from "@/types/form";
 
-const TagsInput = ({ register, name, errors, initialTags = [] }) => {
+const TagsInput: React.FC< TagsInputProps > = ({ name, errors, initialTags = [] }) => {
   const { setValue } = useFormContext(); 
-  const [tags, setTags] = useState(initialTags);
-  const [inputValue, setInputValue] = useState("");
+  const [tags, setTags] = useState<string[]>(
+    Array.isArray( initialTags ) ? initialTags : []
+  );
+  const [ inputValue , setInputValue ] = useState("") ;
 
-  const updateTags = (newTags) => {
+  const updateTags = (newTags: string[]) => {
     setTags(newTags);
     setValue(name, newTags);
   };
@@ -21,13 +24,13 @@ const TagsInput = ({ register, name, errors, initialTags = [] }) => {
     setInputValue("");
   };
 
-  const handleKeyUp = (e) => {
+  const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "," || e.key === "Enter") {
       handleFocusOut();
     }
   };
 
-  const removeTag = (index) => {
+  const removeTag = (index: number) => {
     if (confirm("¿Realmente deseas eliminar esta etiqueta?")) {
       updateTags(tags.filter((_, i) => i !== index));
     }
@@ -47,7 +50,7 @@ const TagsInput = ({ register, name, errors, initialTags = [] }) => {
           <span
             key={index}
             className="tag bg-blue-300 text-gray-700 px-3 py-1 mr-2 mb-2 rounded cursor-pointer relative"
-            onClick={() => removeTag(index)} 
+            onClick={() => removeTag(index)}
           >
             {tag}
             <span className="tag-close absolute right-1 top-0.5 text-xs text-red-500">
@@ -59,13 +62,13 @@ const TagsInput = ({ register, name, errors, initialTags = [] }) => {
           type="text"
           value={inputValue}
           placeholder="Add a skill"
-          onChange={(e) => setInputValue(e.target.value)} 
-          onBlur={handleFocusOut} 
-          onKeyUp={handleKeyUp} 
+          onChange={(e) => setInputValue(e.target.value)}
+          onBlur={handleFocusOut}
+          onKeyUp={handleKeyUp}
           className="bg-gray-200 p-2 rounded outline-none flex-grow"
         />
       </div>
-      {errors && <p className="text-red-500 text-sm">{errors.message}</p>}
+      {errors?.message && <p className="text-red-500 text-sm">{errors.message}</p>}
     </div>
   );
 };

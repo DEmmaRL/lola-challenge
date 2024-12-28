@@ -8,8 +8,9 @@ import { ExperienceSchema } from "@/schemas/experience.schema";
 import Stepper from "@/components/Stepper";
 import TagsInput from "@/components/TagsInput";
 import { motion, AnimatePresence } from "framer-motion";
+import { ApplicationForm, FieldsByStep , Step } from "@/types/form";
 
-const steps = [
+const steps: Step[] = [
   { title: "Información Personal", details: "Datos personales" },
   { title: "Logros", details: "Información de experiencia" },
   { title: "Revisión", details: "Confirma todos los datos" },
@@ -18,9 +19,9 @@ const steps = [
 export default function MultiStepForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const [direction, setDirection] = useState( "next" );
+  const [direction, setDirection] = useState<"next" | "prev">("next");
 
-  const getStoredData = () => {
+  const getStoredData = (): Partial<ApplicationForm> => {
     if (typeof window !== "undefined") {
       const savedData = localStorage.getItem("formData");
       return savedData ? JSON.parse(savedData) : {};
@@ -30,10 +31,16 @@ export default function MultiStepForm() {
 
   const storedData = getStoredData();
 
-  const methods = useForm({
-    resolver: zodResolver(currentStep === 0 ? PersonalInfoSchema : ExperienceSchema),
-    defaultValues: storedData,
+  const methods = useForm<ApplicationForm>({
+    resolver: zodResolver(
+      currentStep === 0 ? PersonalInfoSchema : ExperienceSchema
+    ),
+    defaultValues: {
+      skills: [],
+      ...storedData,
+    },
   });
+  
 
   const { handleSubmit, watch, trigger, formState, setValue } = methods;
   const { errors } = formState;
@@ -61,48 +68,53 @@ export default function MultiStepForm() {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
-  const goToStep = (stepIndex: number) => setCurrentStep(stepIndex);
+  const goToStep = (stepIndex: number) => {
+    setDirection(stepIndex > currentStep ? "next" : "prev");
+    setCurrentStep(stepIndex);
+  };
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: ApplicationForm) => {
     console.log("Form Submitted:", data);
   };
 
-  const fieldsByStep = [
-    [
+  const fieldsByStep: FieldsByStep = {
+    0: [
       { label: "Nombre Completo", name: "fullName", placeholder: "Ingresa tu nombre completo" },
       { label: "Correo Electrónico", name: "email", type: "email", placeholder: "Ingresa tu correo" },
       { label: "Teléfono", name: "phone", placeholder: "Ingresa tu teléfono" },
       { label: "Ubicación", name: "location", placeholder: "Ingresa tu ubicación" },
       { label: "URL de Portafolio", name: "portfolioUrl", type: "url", placeholder: "Ingresa tu portafolio (opcional)" },
     ],
-    [
+    1: [
       { label: "Puesto Actual", name: "currentRole", placeholder: "Ingresa tu puesto actual" },
       {
         label: "Años de Experiencia",
         name: "yearsOfExperience",
         type: "number",
         placeholder: "Ingresa tus años de experiencia",
-        options: { min: 0 },
       },
       { label: "Habilidades", name: "skills", type: "tags" },
       { label: "Empresa", name: "company", placeholder: "Ingresa el nombre de tu empresa" },
       {
         label: "Descripción de Logros",
-        name: "achievementsDescription",
+        name: "achievement",
         placeholder: "Describe tus logros (mínimo 100 caracteres)",
       },
     ],
-  ];
+  };
 
-  const renderFields = (fields) =>
+  const renderFields = (fields: typeof fieldsByStep[0]) =>
     fields.map((field) =>
       field.type === "tags" ? (
         <TagsInput
           key={field.name}
-          register={methods.register}
           name={field.name}
           errors={errors[field.name]}
-          initialTags={methods.getValues(field.name)}
+          initialTags={
+            Array.isArray(methods.getValues(field.name)) 
+              ? methods.getValues(field.name) as string[] 
+              : undefined
+          }
         />
       ) : (
         <div key={field.name} className="mb-4">
@@ -121,13 +133,15 @@ export default function MultiStepForm() {
         </div>
       )
     );
+  
 
   return (
-    (<FormProvider {...methods}>
+    <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full sm:w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px] mx-auto my-6 p-6 rounded-xl border bg-white shadow-md"
+        className="w-full sm:w-[600px] mx-auto my-6 p-6 rounded-xl border bg-white shadow-md"
       >
+        {/* TODO: Hacer que el stepper abarque todo el ancho disponible  */}
         <Stepper steps={steps} currentStep={currentStep} />
 
         <AnimatePresence mode="wait">
@@ -177,7 +191,13 @@ export default function MultiStepForm() {
                       <button
                         type="button"
                         className="mt-2 text-blue-600 hover:underline"
-                        onClick={() => goToStep(fieldsByStep.findIndex((fields) => fields.some((f) => f.name === key)))}
+                        onClick={() =>
+                          goToStep(
+                            Object.keys(fieldsByStep).findIndex((step) =>
+                              fieldsByStep[+step]?.some((field) => field.name === key)
+                            )
+                          )
+                        }
                       >
                         Editar
                       </button>
@@ -231,6 +251,6 @@ export default function MultiStepForm() {
           )}
         </div>
       </form>
-    </FormProvider>)
+    </FormProvider>
   );
 }

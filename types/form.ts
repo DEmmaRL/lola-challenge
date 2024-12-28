@@ -10,9 +10,37 @@ export interface PersonalInfo {
 export interface Experience {
   currentRole: string;
   yearsOfExperience: number;
-  skills: string[];
+  skills?: string[];
   company: string;
   achievement: string;
 }
 
 export interface ApplicationForm extends PersonalInfo, Experience {}
+
+export interface FormField {
+  label: string;
+  name: keyof ApplicationForm;
+  placeholder?: string;
+  type?: string;
+}
+
+export interface FieldsByStep {
+  [step: number]: FormField[];
+}
+
+export interface Step {
+  title: string;
+  details: string;
+}
+
+// Props
+export interface TagsInputProps {
+  name: string;
+  errors?: { message?: string };
+  initialTags?: string[];
+}
+
+export interface StepperProps {
+  steps: Step[];
+  currentStep: number;
+}
